@@ -8,7 +8,8 @@
 return array(
     'modules' => array(
         'Application',
-        'AnkitKumar'
+        'AnkitKumar',
+        'Users'
     ),
     'module_listener_options' => array(
         'module_paths' => array(
