@@ -1,0 +1,63 @@
+<section class="register">
+
+    <h2>Register</h2>
+    <!-- for error generation section starts-->
+    <?php if ($this->error): ?>
+        <p class="error">There were one or more issues with your submission. Please correct them as indicated below. </p>
+    <?php endif ?>
+
+    <!-- for error generation section ends -->
+
+    <!-- form generation section starts -->
+
+    <?php
+    // The following block is used to generate the <form> HTML tag using the form object assigned to the view in the controller.
+
+    $form = $this->form;
+    $form->prepare();
+    $form->setAttribute('action', $this->url(NULL, array('controller' => 'Login', 'action' => 'process')));
+    $form->setAttribute('method', 'post');
+    echo $this->form()->openTag($form);
+    ?>
+
+
+    <!-- form generation section ends -->
+
+    <!-- form generation section starts -->
+    <?php
+    // The following section is used to generate individual form elements
+    ?>
+
+    <dl class="zend_form">
+        
+
+        <dt><?php echo $this->formLabel($form->get('email')); ?></dt>
+        <dd><?php
+            echo $this->formElement($form->get('email'));
+            echo $this->formElementErrors($form->get('email'));
+            ?>
+        </dd>
+
+        <dt><?php echo $this->formLabel($form->get('password')); ?></dt>
+        <dd><?php
+            echo $this->formElement($form->get('password'));
+            echo $this->formElementErrors($form->get('password'));
+            ?>
+        </dd>
+
+        <dd><?php
+            echo $this->formElement($form->get('submit'));
+            echo $this->formElementErrors($form->get('submit'));
+            ?>
+        </dd>
+    </dl>
+
+
+    <!-- form generation section ends -->
+
+    <!-- form tag closing stars -->
+
+    <?php echo $this->form()->closeTag() ?>
+</section>
+
+<!-- form tag closing ends -->

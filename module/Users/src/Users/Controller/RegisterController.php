@@ -5,18 +5,75 @@ namespace Users\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Users\Form\RegisterForm;
+use Users\Form\RegisterFilter;
+use Users\Model\User;
+use Users\Model\UserTable;
 
 class RegisterController extends AbstractActionController {
 
     public function indexAction() {
         $form = new RegisterForm();
-        $viewModel = new ViewModel(array('form' =>$form));
+        $viewModel = new ViewModel(array('form' => $form));
         return $viewModel;
     }
 
     public function confirmAction() {
         $viewModel = new ViewModel();
         return $viewModel;
+    }
+
+    public function processAction() {
+
+        //  print_r($this->request->getPost()); die();
+
+        if (!$this->request->isPost()) {
+
+            return $this->redirect()->toRoute(NULL, array('controller' => 'register', 'action' => index));
+        }
+
+        $post = $this->request->getPost();
+
+        $form = new RegisterForm();
+        $inputFilter = new RegisterFilter();
+
+        $form->setInputFilter($inputFilter);
+
+        $form->setData($post);
+        if (!$form->isValid()) {
+
+            $model = new ViewModel(array('error' => true, 'form' => $form));
+            $model->setTemplate('users/register/index');
+            return $model;
+        }
+
+        // Create user
+        $this->createUser($form->getData());
+
+        return $this->redirect()->toRoute(NULL, array('controller' => 'register', 'action' => 'confirm'));
+    }
+
+    protected function createUser(array $data) {
+        
+        /** follwoing section is not clear **/
+        // Used to provide the database adapter name.
+
+        $sm = $this->getServiceLocator();
+        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+        
+       // Used to provide the ResultSet type
+
+        $resultSetPrototype = new \Zend\Db\ResultSet\ResultSet();
+        $resultSetPrototype->setArrayObjectPrototype(new \Users\Model\User);
+        
+        $tableGateway = new \Zend\Db\TableGateway\TableGateway('user', $dbAdapter, null, $resultSetPrototype);
+        
+         /** follwoing section is not clear **/
+        
+        $user = new User();
+        $user->exchangeArray($data);
+        $userTable = new UserTable($tableGateway);
+        $userTable->saveUser($user);
+        return true;
     }
 
 }

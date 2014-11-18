@@ -24,19 +24,19 @@ class RegisterForm extends Form {
             'options' => array('label' => 'Email'),
             'attributes' => array('type' => 'email', 'required' => 'required'),
             'filters' => array(array('name' => 'StringTrim')),
-            //'validators' => array(array('name' => 'EmailAddress', 'message' => array(\Zend\Validator\EmailAddress::INVALID_FORMAT => 'Email address format is invalid'))),
+            'validators' => array(array('name' => 'EmailAddress', 'message' => array(\Zend\Validator\EmailAddress::INVALID_FORMAT => 'Email address format is invalid'))),
         ));
 
         $this->add(array(
             'name' => 'password1',
             'options' => array('label' => 'Password'),
-            'arrtibutes' => array('type' => 'password'),
+            'attributes' => array('type' => 'password'),
         ));
 
         $this->add(array(
             'name' => 'confirm_password1',
             'options' => array('label' => 'Confirm Password'),
-            'arrtibutes' => array('type' => 'confirm_password'),
+            'attributes' => array('type' => 'password'),
         ));
 
         $this->add(array(
